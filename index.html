@@ -1,0 +1,118 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palestra - Agradecimento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Stalysta&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://img.freepik.com/fotos-gratis/ilustracao-do-ceu-noturno-do-anime_23-2151684343.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Stalysta', Arial, sans-serif;
+        }
+
+        .centered {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-size: 36px;
+            margin: 0;
+        }
+
+        p {
+            color: #5a5a5a;
+            font-size: 18px;
+            margin: 10px 0 0 0;
+        }
+
+        #permissionMessage {
+            display: none;
+            color: red;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="centered">
+        <h1>Obrigada pela sua presença!</h1>
+        <p>Espero que tenha aproveitado a palestra.</p>
+        <p id="permissionMessage">Clique aqui para permitir que a música toque.</p>
+        <button id="stopButton">Parar Música</button>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.dropbox.com/scl/fi/487fspjfbtkyui3e5jqlb/Dragon-Ball-Super.mp3?rlkey=xekaqt4pcv1dz80w3s99qz74x&st=ei7z1rr1&dl=1" type="audio/mp3">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const music = document.getElementById('backgroundMusic');
+            const permissionMessage = document.getElementById('permissionMessage');
+            const stopButton = document.getElementById('stopButton');
+
+            // Define o volume da música para médio (50%)
+            music.volume = 0.5;
+
+            // Tenta tocar a música automaticamente
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('Música tocando');
+                }).catch(error => {
+                    console.log('Autoplay foi bloqueado.');
+                    permissionMessage.style.display = 'block';
+                });
+            }
+
+            // Adiciona um listener para o clique na mensagem
+            permissionMessage.addEventListener('click', () => {
+                music.play().then(() => {
+                    permissionMessage.style.display = 'none';
+                }).catch(error => {
+                    console.log('Ainda não é possível tocar a música.');
+                });
+            });
+
+            // Adiciona um listener para o botão de parar a música
+            stopButton.addEventListener('click', () => {
+                music.pause(); // Para a música
+            });
+        });
+    </script>
+</body>
+</html>
